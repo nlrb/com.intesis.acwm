@@ -1,0 +1,89 @@
+<script>
+  Homey.setTitle( __('pair.title') );
+  function saveSettings () {
+    $('.err-msg').text('');
+    $('#save').prop('disabled', true);
+    // input variables
+    var inputIPAddress = $('#ipAddress').val();
+    var inputUsername = $('#username').val();
+    var inputPassword = $('#password').val();
+
+    // ip-address can not be empty
+    if (inputIPAddress == "") {
+ 	    Homey.alert(__('pair.required'));
+      $('#save').prop('disabled', false);
+   		return;
+    }
+
+    // create Regular Expression that validates for IPv4 addresses, then do the actual test on the input.
+    var Ipv4RegEx = new RegExp ('^(([01]?\\d\\d?|2[0-4]\\d|25[0-5]).){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])$');
+    var IPInputOK = Ipv4RegEx.test(inputIPAddress);
+
+    if (!IPInputOK) {
+   	   Homey.alert(__('pair.invalidIP'));
+       $('#save').prop('disabled', false);
+   	   return;
+    }
+ 	  if (IPInputOK) {
+      let data = {
+        ip: inputIPAddress, username: inputUsername, password: inputPassword
+      }
+      $('.err-msg').text(__('pair.check'));
+	    Homey.emit('check', data, (err, device) => {
+  			if (err) {
+          $('.err-msg').text(__('pair.error') + ' (' + err + ')');
+          $('#save').prop('disabled', false);
+       		return;
+  			} else {
+          $('.err-msg').text(__('pair.add'));
+          //Successfully connected
+          $('#save').prop('disabled', true);
+    			Homey.addDevice(device, (err, result) => {
+    				if (err) {
+              $('.err-msg').text(__('pair.error') + ' (' + err + ')');
+              $('#save').prop('disabled', false);
+           		return;
+            }
+    				console.log(result);
+    				//Done pairing
+    				Homey.done();
+    			});
+        }
+      });
+    }
+  }
+
+  Homey.on('error', message => {
+    $('.err-msg').text(__('pair.error'));
+    Homey.done();
+  })
+</script>
+<p data-i18n="pair.intro"></p>
+<style>
+	.pairSettings {
+		font-size:16px;
+		border:none;
+	}
+	input {
+		font-size:16px;
+		border: 1px solid #ccc;
+	}
+</style>
+<table class="pairSettings">
+	<tr>
+		<td style="width:100px;" data-i18n="pair.ipAddress"></td>
+		<td><input id="ipAddress" type="text" placeholder="192.168.1.1" required /></td>
+	</tr>
+	<tr>
+		<td style="width:100px;" data-i18n="pair.username"></td>
+		<td><input id="username" type="text" value="admin" placeholder="admin"/></td>
+	</tr>
+  <tr>
+		<td style="width:100px;" data-i18n="pair.password"></td>
+		<td><input id="password" type="password" value="admin" placeholder="amin"/></td>
+	</tr>
+</table>
+<fieldset>
+    <button class="button" data-i18n="pair.save" id="save" onclick="saveSettings()"></button>
+</fieldset>
+<p class="err-msg" style="color:#ff6347;"></p>

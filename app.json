@@ -1,0 +1,250 @@
+{
+	"id": "com.intesis.acwm",
+	"version": "1.0.0",
+	"compatibility": ">=1.5.0",
+	"sdk": 2,
+	"name": {
+		"en": "Intesis Airconwithme"
+	},
+	"description": {
+		"en": "Control your airconditioner via the Intesis Airconwithme wifi module web server",
+    "nl": "Bestuur je airconditioner via de Intesis Airconwithme wifi module web server"
+	},
+  "keywords": [
+    "Intesis", "Airco", "Airconditioner", "Airconwithme", "Mitsubishi", "MH-AC-WIFI-1"
+  ],
+	"category": [
+		"climate"
+	],
+	"permissions": [],
+	"images": {
+		"large": "/assets/images/large.png",
+		"small": "/assets/images/small.png"
+	},
+	"author": {
+		"name": "Ramón Baas"
+	},
+	"capabilities": {
+		"thermostat_mode_mh": {
+			"type": "enum",
+			"title": {
+				"en": "Operation mode",
+				"nl": "Bedrijfsmodus"
+			},
+			"getable": true,
+			"setable": true,
+			"values": [{
+					"id": "4",
+					"title": {
+						"en": "Cool",
+						"nl": "Koelen"
+					}
+				},
+				{
+					"id": "1",
+					"title": {
+						"en": "Heat",
+						"nl": "Verwarmen"
+					}
+				},
+				{
+					"id": "3",
+					"title": {
+						"en": "Fan",
+						"nl": "Ventilator"
+					}
+				},
+				{
+					"id": "2",
+					"title": {
+						"en": "Dry",
+						"nl": "Drogen"
+					}
+				}
+			]
+		},
+		"fan_rate_mh": {
+			"type": "enum",
+			"title": {
+				"en": "Fan speed",
+				"nl": "Ventilator snelheid"
+			},
+			"getable": true,
+			"setable": true,
+			"values": [{
+					"id": "0",
+					"title": {
+						"en": "Auto",
+						"nl": "Auto"
+					}
+				},
+				{
+					"id": "1",
+					"title": {
+						"en": "Level 1",
+						"nl": "Niveau 1"
+					}
+				},
+				{
+					"id": "2",
+					"title": {
+						"en": "Level 2",
+						"nl": "Niveau 2"
+					}
+				},
+				{
+					"id": "3",
+					"title": {
+						"en": "Level 3",
+						"nl": "Niveau 3"
+					}
+				},
+				{
+					"id": "4",
+					"title": {
+						"en": "Level 4",
+						"nl": "Niveau 4"
+					}
+				}
+			]
+		},
+		"vane_updown_position_mh": {
+			"type": "enum",
+			"title": {
+				"en": "Vane position",
+				"nl": "Blad richting"
+			},
+			"getable": true,
+			"setable": true,
+			"values": [{
+					"id": "1",
+					"title": {
+						"en": "Position 1",
+						"nl": "Positie 1"
+					}
+				},
+				{
+					"id": "2",
+					"title": {
+						"en": "Position 2",
+						"nl": "Positie 2"
+					}
+				},
+				{
+					"id": "3",
+					"title": {
+						"en": "Position 3",
+						"nl": "Positie 3"
+					}
+				},
+				{
+					"id": "4",
+					"title": {
+						"en": "Position 4",
+						"nl": "Positie 4"
+					}
+				},
+				{
+					"id": "10",
+					"title": {
+						"en": "Swing",
+						"nl": "Zwenken"
+					}
+				}
+			]
+		}
+	},
+	"drivers": [{
+		"id": "MH-AC-WIFI-1",
+		"name": {
+			"en": "MH-AC-WIFI-1"
+		},
+		"class": "thermostat",
+		"capabilities": [
+			"onoff",
+			"thermostat_mode_mh",
+			"fan_rate_mh",
+			"vane_updown_position_mh",
+			"target_temperature",
+			"measure_temperature.inside",
+			"measure_temperature.outside"
+		],
+		"images": {
+			"large": "/drivers/airco/assets/images/large.png",
+			"small": "/drivers/airco/assets/images/small.png"
+		},
+    "pair": [
+      {
+        "id": "start"
+      }
+    ],
+		"settings": [{
+				"type": "group",
+				"label": {
+					"en": "Network & account",
+					"nl": "Netwerk & account"
+				},
+				"children": [{
+					"id": "ip",
+					"type": "text",
+					"pattern": "^(([01]?\\d\\d?|2[0-4]\\d|25[0-5]).){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])$",
+					"label": {
+						"en": "IP address",
+						"nl": "IP adres"
+					},
+					"hint": {
+						"en": "The IP address of the module. Please make sure this is static. If it changes, change it here.",
+						"nl": "Het IP-adres van de module. Als het IP adres wijzigt, moet het hier aangepast worden."
+					},
+					"value": ""
+				}, {
+					"id": "username",
+					"type": "text",
+					"label": {
+						"en": "Username",
+						"nl": "Gebruikersnaam"
+					},
+					"hint": {
+						"en": "Default: admin"
+					},
+					"value": "admin"
+				}, {
+					"id": "password",
+					"type": "password",
+					"label": {
+						"en": "Password",
+						"nl": "Wachtwoord"
+					},
+					"hint": {
+						"en": "Default: admin"
+					},
+					"value": "admin"
+				}]
+			},
+			{
+				"type": "group",
+				"label": {
+					"en": "Other settings",
+					"nl": "Overige instellingen"
+				},
+				"children": [{
+					"id": "interval",
+					"type": "number",
+					"label": {
+						"en": "Polling interval",
+						"nl": "Gegevens opvragen elke"
+					},
+					"hint": {
+						"en": "Every x seconds the app will refresh its information.",
+						"nl": "Iedere x seconden zal de app haar gegevens verversen."
+					},
+					"value": 10,
+					"attr": {
+						"min": 5,
+						"max": 60
+					}
+				}]
+			}
+		]
+	}]
+}

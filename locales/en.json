@@ -1,0 +1,15 @@
+{
+  "pair": {
+    "title": "Add an AirconWithMe device",
+    "intro": "Enter IP address and credentials",
+    "required": "An IP address is required",
+    "invalidIP": "IP address is invalid",
+    "check": "Looking for Intesis web server",
+    "error": "Error adding the device",
+    "add": "Device is being added to Homey",
+    "ipAddress": "IP address",
+    "username": "Username",
+    "password": "Password",
+    "save": "Add device"
+  }
+}
