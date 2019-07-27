@@ -173,6 +173,20 @@
 			"large": "/drivers/airco/assets/images/large.png",
 			"small": "/drivers/airco/assets/images/small.png"
 		},
+    "capabilitiesOptions": {
+			"measure_temperature.inside": {
+				"title": {
+					"en": "Temperature inside",
+					"nl": "Temperatuur binnen"
+				}
+			},
+			"measure_temperature.outside": {
+				"title": {
+					"en": "Temperature outside",
+					"nl": "Temperatuur buiten"
+				}
+			}
+		},
     "pair": [
       {
         "id": "start"
