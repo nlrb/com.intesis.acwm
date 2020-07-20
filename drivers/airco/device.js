@@ -9,6 +9,7 @@ class AircoDevice extends Homey.Device {
     // Common capability listeners
     const capabilityListeners = {
       onoff: this.onPowerOnoff.bind(this),
+			thermostat_mode_mh: this.onThermostatMode.bind(this),
       fan_rate_mh: this.onFanRate.bind(this),
       vane_updown_position_mh: this.onVaneUpDownDirection.bind(this),
       target_temperature: this.onSetpoint.bind(this)
@@ -68,6 +69,11 @@ class AircoDevice extends Homey.Device {
     return this.acwm.setDataPointValue(1, (value ? 1 : 0))
   }
 
+	onThermostatMode(value) {
+		this.log('onThermostatMode', value)
+    return this.acwm.setDataPointValue(2, Number(value))
+	}
+
   onFanRate(value) {
     this.log('onFanRate', value)
     return this.acwm.setDataPointValue(4, Number(value))
@@ -87,28 +93,29 @@ class AircoDevice extends Homey.Device {
       this.acwm.getDataPointValue()
         .then(result => {
           result.forEach(x => {
-            try {
-              if (x.uid === 1) {
-                this.setCapabilityValue('onoff', x.value == 1)
-              } else if (x.uid === 2) {
-                this.setCapabilityValue('thermostat_mode_mh', x.value.toString())
-              } else if (x.uid === 4) {
-                this.setCapabilityValue('fan_rate_mh', x.value.toString())
-              } else if (x.uid === 5) {
-                this.setCapabilityValue('vane_updown_position_mh', x.value.toString())
-              } else if (x.uid === 9) {
-                this.setCapabilityValue('target_temperature', x.value / 10)
-              } else if (x.uid === 10) {
-                this.setCapabilityValue('measure_temperature.inside', x.value / 10)
-              } else if (x.uid === 37) {
-                this.setCapabilityValue('measure_temperature.outside', x.value / 10)
-              }
-            } catch(err) {
-              console.error(err)
+            let update;
+            if (x.uid === 1) {
+              update = { item: 'onoff', value: x.value == 1 };
+            } else if (x.uid === 2) {
+							update = { item: 'thermostat_mode_mh', value: x.value.toString() };
+            } else if (x.uid === 4) {
+							update = { item: 'fan_rate_mh', value: x.value.toString() };
+            } else if (x.uid === 5) {
+							update = { item: 'vane_updown_position_mh', value: x.value.toString() };
+            } else if (x.uid === 9) {
+							update = { item: 'target_temperature', value: x.value / 10 };
+            } else if (x.uid === 10) {
+							update = { item: 'measure_temperature.inside', value: x.value / 10 };
+            } else if (x.uid === 37) {
+							update = { item: 'measure_temperature.outside', value: x.value / 10 };
             }
+						if (update) {
+							this.setCapabilityValue(update.item, update.value)
+								.catch(err => this.error('Error:', update, err.message));
+						}
           })
         })
-      .catch(err => console.error(err))
+      .catch(err => this.error(err))
   }
 
   // Set up timer to poll status of the device

@@ -34,6 +34,13 @@
 			"getable": true,
 			"setable": true,
 			"values": [{
+					"id": "0",
+					"title": {
+						"en": "Auto",
+						"nl": "Auto"
+					}
+				},
+				{
 					"id": "4",
 					"title": {
 						"en": "Cool",

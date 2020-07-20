@@ -1,0 +1,23 @@
+{
+  "name": "com.intesis.acwm",
+  "version": "1.0.0",
+  "description": "Homey app to control Intesis wifi airconditioners",
+  "main": "app.js",
+  "dependencies": {
+     "acwm-api": "1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nlrb/com.intesis.acwm.git"
+  },
+  "author": "Ramon Baas",
+  "license": "GPL3",
+  "bugs": {
+    "url": "https://github.com/nlrb/com.intesis.acwm/issues"
+  },
+  "homepage": "https://github.com/nlrb/com.intesis.acwm#readme"
+}
