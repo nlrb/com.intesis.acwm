@@ -1,6 +1,6 @@
 {
 	"id": "com.intesis.acwm",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"compatibility": ">=1.5.0",
 	"sdk": 2,
 	"brandColor": "#3C6AF6",
@@ -28,7 +28,7 @@
 		"small": "/assets/images/small.png"
 	},
 	"author": {
-		"name": "Ramón Baas"
+		"name": "Ramon Baas"
 	},
 	"capabilities": {
 		"target_temperature": {

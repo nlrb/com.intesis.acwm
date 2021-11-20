@@ -4,7 +4,7 @@
   "description": "Homey app to control Intesis wifi airconditioners",
   "main": "app.js",
   "dependencies": {
-     "acwm-api": "1.0.0"
+    "acwm-api": "1.0.0"
   },
   "devDependencies": {},
   "scripts": {
