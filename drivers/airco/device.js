@@ -5,11 +5,11 @@ const acwm = require('acwm-api')
 
 class AircoDevice extends Homey.Device {
 
-	onInit() {
+  onInit () {
     // Common capability listeners
     const capabilityListeners = {
       onoff: this.onPowerOnoff.bind(this),
-			thermostat_mode_mh: this.onThermostatMode.bind(this),
+      thermostat_mode_mh: this.onThermostatMode.bind(this),
       fan_rate_mh: this.onFanRate.bind(this),
       vane_updown_position_mh: this.onVaneUpDownDirection.bind(this),
       target_temperature: this.onSetpoint.bind(this)
@@ -26,11 +26,11 @@ class AircoDevice extends Homey.Device {
     // Set up Polling
     this.setPollTimer(this.interval)
 
-		this.log('AircoDevice has been inited')
-	}
+    this.log('AircoDevice has been inited')
+  }
 
   // Check settings and update e.g. ip, timer when needed
-  async onSettings(oldSettings, newSettings, changedKeys, callback) {
+  async onSettings (oldSettings, newSettings, changedKeys, callback) {
     this.log(changedKeys)
     let error
     if (changedKeys.includes('ip')) {
@@ -64,62 +64,62 @@ class AircoDevice extends Homey.Device {
   }
 
   // The Device has requested a state change (turned on or off)
-  onPowerOnoff(value) {
+  onPowerOnoff (value) {
     this.log('onPowerOnoff', value)
     return this.acwm.setDataPointValue(1, (value ? 1 : 0))
   }
 
-	onThermostatMode(value) {
-		this.log('onThermostatMode', value)
+  onThermostatMode (value) {
+    this.log('onThermostatMode', value)
     return this.acwm.setDataPointValue(2, Number(value))
-	}
+  }
 
-  onFanRate(value) {
+  onFanRate (value) {
     this.log('onFanRate', value)
     return this.acwm.setDataPointValue(4, Number(value))
   }
 
-  onVaneUpDownDirection(value) {
+  onVaneUpDownDirection (value) {
     this.log('onVaneUpDownDirection', value)
     return this.acwm.setDataPointValue(5, Number(value))
   }
 
-  onSetpoint(value) {
+  onSetpoint (value) {
     this.log('onSetpoint', value)
     return this.acwm.setDataPointValue(9, value * 10)
   }
 
-  updateAllValues() {
-      this.acwm.getDataPointValue()
-        .then(result => {
-          result.forEach(x => {
-            let update;
-            if (x.uid === 1) {
-              update = { item: 'onoff', value: x.value == 1 };
-            } else if (x.uid === 2) {
-							update = { item: 'thermostat_mode_mh', value: x.value.toString() };
-            } else if (x.uid === 4) {
-							update = { item: 'fan_rate_mh', value: x.value.toString() };
-            } else if (x.uid === 5) {
-							update = { item: 'vane_updown_position_mh', value: x.value.toString() };
-            } else if (x.uid === 9) {
-							update = { item: 'target_temperature', value: x.value / 10 };
-            } else if (x.uid === 10) {
-							update = { item: 'measure_temperature.inside', value: x.value / 10 };
-            } else if (x.uid === 37) {
-							update = { item: 'measure_temperature.outside', value: x.value / 10 };
-            }
-						if (update) {
-							this.setCapabilityValue(update.item, update.value)
-								.catch(err => this.error('Error:', update, err.message));
-						}
-          })
+  updateAllValues () {
+    this.acwm.getDataPointValue()
+      .then(result => {
+        result.forEach(x => {
+          let update;
+          if (x.uid === 1) {
+            update = { item: 'onoff', value: x.value == 1 };
+          } else if (x.uid === 2) {
+            update = { item: 'thermostat_mode_mh', value: x.value.toString() };
+          } else if (x.uid === 4) {
+            update = { item: 'fan_rate_mh', value: x.value.toString() };
+          } else if (x.uid === 5) {
+            update = { item: 'vane_updown_position_mh', value: x.value.toString() };
+          } else if (x.uid === 9) {
+            update = { item: 'target_temperature', value: x.value / 10 };
+          } else if (x.uid === 10) {
+            update = { item: 'measure_temperature.inside', value: x.value / 10 };
+          } else if (x.uid === 37) {
+            update = { item: 'measure_temperature.outside', value: x.value / 10 };
+          }
+          if (update) {
+            this.setCapabilityValue(update.item, update.value)
+              .catch(err => this.error('Error:', update, err.message));
+          }
         })
+      })
       .catch(err => this.error(err))
   }
 
   // Set up timer to poll status of the device
-  setPollTimer(interval) {
+  setPollTimer (interval) {
     this.pollTimer = setInterval(async () => {
       this.updateAllValues()
     }, (interval || 10) * 1000)
